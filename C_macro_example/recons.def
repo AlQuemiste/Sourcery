@@ -1,0 +1,42 @@
+/* macro definition for convolution function */
+
+// store the indices of non-finite elements in a vector
+#ifdef STORE_NONFINITES
+  #define STORE(vector, idx) {vector.push_back(idx)}
+#else
+  #define STORE(vector, idx)
+#endif
+
+// nonlocal variables: rows_a::size_t, rows_k::size_t, result::f64*, nonfinites::vector<size_t>
+#define CONVOLVE(arBegin, arEnd, acBegin, acEnd, krBegin, krEnd, kcBegin, kcEnd)   \
+  {                                                                     \
+    for (std::size_t ar = (arBegin); ar <= (arEnd); ++ar) {             \
+      for (std::size_t ac = (acBegin); ac <= (acEnd); ++ac) {           \
+        float64 conv = 0, norm = 0;                                     \
+        for (std::size_t kr = (krBegin); kr <= (krEnd); ++kr) {         \
+          for (std::size_t kc = (kcBegin); kc <= (kcEnd); ++kc) {       \
+            const std::size_t n = ar - radr + kr, m = ac - radc + kc,   \
+              idx_a = n * rows_a + m;                                   \
+            const float64 va = array[idx_a];                            \
+            if (std::isfinite(va)) {                                    \
+              const std::size_t idx_k = kr * rows_k + kc;               \
+              const float64 vk = kernel[idx_k];                         \
+              conv += va * vk;                                          \
+              norm += vk;                                               \
+            }                                                           \
+          }                                                             \
+        }                                                               \
+        const std::size_t idx_r = ar * rows_a + ac;                     \
+        if (norm > 0) {                                                 \
+          result[idx_r] = conv / norm;                                  \
+        } else {                                                        \
+          result[idx_r] = array[idx_r];                                 \
+          STORE(nonfinites, idx_r);                                     \
+        }                                                               \
+      }                                                                 \
+    }                                                                   \
+  }
+
+
+// macro for defining a function for different types
+#define FOO(TYPE) void foo_##TYPE(TYPE* x, TYPE y) {x[0] = y;}
