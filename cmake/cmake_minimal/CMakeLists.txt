@@ -49,28 +49,31 @@ set(DEFAULT_BUILD_TYPE "Release")
 # set(SOURCE_FILES ${SOURCE_DIR}/foo.c)
 set(SOURCE_DIR ${foo_SOURCE_DIR})
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_DIR}/foo.c)
+set(foolibname foo)
+add_library(${foolibname} SHARED ${SOURCE_DIR}/foo.c)
+
+add_library(qux SHARED ${SOURCE_DIR}/qux.c)
 
 add_executable(mytest ${SOURCE_DIR}/main.c)
-target_link_libraries(mytest PRIVATE ${PROJECT_NAME})
+target_link_libraries(mytest PRIVATE ${foolibname} qux)
 target_compile_options(mytest PRIVATE -std=c++11 -Wall -Wfloat-conversion)
-# target_include_directories(${PROJECT_NAME} PUBLIC
+# target_include_directories(${foolibname} PUBLIC
 #     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 #     $<INSTALL_INTERFACE:include>
 #     PRIVATE src)
 
-# set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 3)
+# set_target_properties(${foolibname} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 3)
 
-get_target_property(LibName ${PROJECT_NAME} LIBRARY_OUTPUT_NAME)
+get_target_property(LibName ${foolibname} LIBRARY_OUTPUT_NAME)
 message(STATUS "LibName: ${LibName}")
 
-file(WRITE ${CMAKE_BINARY_DIR}/readme.py "version='${PROJECT_NAME}.${PROJECT_VERSION}'; print(version);")
+file(WRITE ${CMAKE_BINARY_DIR}/readme.py "version='${foolibname}.${PROJECT_VERSION}'; print(version);")
 
 # CHECK THIS vvv
 # drop any version info from so-name of the shared-library (eg., `libcefidtools.so`)
 # see https://stackoverflow.com/a/53553496/3484761
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${CEFID_MAJORVER}.${CEFID_MINORVER}.${CEFID_PATCHLEVEL}
-                      SUFFIX "" SOVERSION "so")
+# set_target_properties(${foolibname} PROPERTIES VERSION ${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${PROJECT_PATCH_LEVEL}
+#                       SUFFIX "" SOVERSION "so")
 
 # see <https://cmake.org/cmake/help/latest/command/if.html>
 if (OPTIONA)  # if OPTIONA is 1, Y, ON, YES, TRUE
