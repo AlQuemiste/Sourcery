@@ -26,7 +26,7 @@ subroutine calculate_mean(a, b, n, m) bind(c)
      b(i) = mean_a
   end do
 
-  print *, "> FORTRAN calculate_mean done."
+  ! print *, "> FORTRAN calculate_mean done."
 
 end subroutine calculate_mean
 
