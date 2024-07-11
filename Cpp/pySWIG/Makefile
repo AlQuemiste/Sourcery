@@ -4,14 +4,14 @@ CC=gcc
 CXX=g++
 LINK=gcc
 
-CXX_INCLUDES=-I/usr/include/python3.9
-CXX_LINKS=-lpython3.9
+CXX_INCLUDES=-I/usr/include/python3.11/
+CXX_LINKS=-lpython3.11
 
 CXX_CFLAGS=-Wall -Wextra -Wpedantic  ${CXX_INCLUDES}
 CXX_LFLAGS= ${CXX_LINKS}  # -Wl,-verbose
 CPP_CFLAGS=-std=c++17
 
-SWIG=swig
+SWIG=$$HOME/.local/jcns/bin/swig
 
 all: api
 
@@ -31,7 +31,8 @@ api_sep: example.cpp example.h example_wrap.cpp
 	${CXX} -shared example.o -o libexample.so
 	${CXX} -shared -o _example.so example_wrap.o -L. -lexample '-Wl,--disable-new-dtags,-rpath,$$ORIGIN'
 	
-#'
+test:
+	python3 test_example.py
 
 clean:
 	@echo "Cleaning all products..."
