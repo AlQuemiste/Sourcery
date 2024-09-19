@@ -39,3 +39,10 @@ def fn_array():
     arr = np.array([[1, 2], [3, 4], [5, 6]], dtype=array_t)
 
     return arr
+
+
+def real_fn(x:float, y:float, b:int) -> float:
+    res = x * y + b
+    print("Python: real_fn called with x = %f, y = %f, b = %d and result = %f"
+          % (x, y, b, res))
+    return res
