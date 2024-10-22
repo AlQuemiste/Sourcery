@@ -9,6 +9,7 @@
 
 // print the name of Python function
 %ignore _pyFuncName;
+%ignore _pyCallFunc;
 
 %inline %{
 
@@ -28,6 +29,29 @@ void _pyFuncName(void* pyFunc) {
     }
 }
 
+void _pyCallFunc(PyObject* pyFunc, PyObject* arg1) {
+    // call a function which takes a single Python object as input
+
+    if (!PyCallable_Check(pyFunc)) {
+        PyErr_SetString(PyExc_TypeError,
+          "_pyCallFunc: first argument must be a Python callable");
+    }
+
+    std::puts("_pyCallFunc: calling Python function...");
+
+    PyObject* pResult = PyObject_CallFunctionObjArgs(pyFunc, arg1, NULL);
+    if (!pResult) {
+        PyErr_SetString(PyExc_RuntimeError,
+          "_pyCallFunc: calling Python function failed.");
+    }
+
+    PyTypeObject* pType = Py_TYPE(pResult); // borrowed reference
+    const char* pType_name = pType->tp_name;
+    std::printf("_pyCallFunc: calling Python function done: returned <%s>\n", pType_name);
+
+    Py_DECREF(pResult);
+}
+
 %};
 
 %include "MyClass.h";
@@ -45,6 +69,10 @@ void _pyFuncName(void* pyFunc) {
             PyErr_SetString(PyExc_TypeError,
               "MyClass.configure(SWIG): First argument must be a Python callable");
         }
+    }
+
+    void callPyFunction(PyObject* pFunc, PyObject* info) {
+        _pyCallFunc(pFunc, info);
     }
 };
 

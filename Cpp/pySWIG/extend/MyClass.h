@@ -16,3 +16,8 @@ public:
 #endif // SWIG
 
 };
+
+struct Info {
+    int i = 0;
+    double x = 0;
+};
