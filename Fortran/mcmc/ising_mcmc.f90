@@ -3,7 +3,7 @@
 
 #define C_F64  real(kind=c_double)
 #define C_I32  integer(kind=c_int)
-
+#define Z_F64 complex(kind=c_double)
 module ising_model
   use, intrinsic :: iso_c_binding, only: c_double, c_int
   implicit none
@@ -40,6 +40,7 @@ module ising_model
      C_F64, dimension(:), pointer :: energy         ! total energy
      C_F64, dimension(:), pointer :: magnetization  ! total magnetization
      C_F64, dimension(:, :), pointer :: mag_localization  ! magnetic localization
+     Z_F64, dimension(:, :, :), pointer :: fourierPhase  ! Fourier phases
   end type AuxObservables
 
 contains
@@ -60,6 +61,33 @@ contains
        end do
     end do
   end subroutine initLattice
+
+  subroutine calcFourierPhases(prm, fourierPhase)
+    ! calculate the Fourier phases
+    type(Parameters), intent(in) :: prm
+    Z_F64, intent(out) :: fourierPhase(prm%L * prm%L, prm%L, prm%L)
+
+    Z_F64, parameter :: I0 = (0, 1)  ! sqrt(-1)
+    C_F64, parameter :: PI = 4.D0 * atan(1.D0)
+
+    Z_F64 :: Z0
+    C_I32 :: iq, q1, q2, m1, m2, maxIdx
+
+    Z0 = - 2.0D0 * PI / prm%L * I0
+    maxIdx = prm%L - 1
+    iq = 1
+
+    do q1 = 0, maxIdx
+       do q2 = 0, maxIdx
+          iq = iq + 1
+          do m1 = 0, maxIdx     ! columns (x)
+             do m2 = 0, maxIdx  ! rows (y)
+                fourierPhase(iq, m2 + 1, m1 + 1) = exp(Z0 * (m1 * q1 + m2 * q2))
+             end do
+          end do
+       end do
+    end do
+  end subroutine calcFourierPhases
 
   pure function withUpperLim(i, L)
     C_I32, intent(in) :: i, L
