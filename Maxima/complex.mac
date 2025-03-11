@@ -1,0 +1,8 @@
+/* formal complex algebra */
+
+declare([xr, xi, mr, mi], real);
+z: xr + xi*%i; m: mr + mi * %i;
+d: (z - m); d2: d * conjugate(d);
+
+/* | z - m |^2 */
+expand(d2);
