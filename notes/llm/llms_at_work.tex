@@ -1,0 +1,153 @@
+\documentclass[10pt,a4paper]{article}
+\AtBeginDocument{\fontsize{14pt}{17pt}\selectfont}
+
+\usepackage[a4paper,margin=1.5cm]{geometry}  % comfortable page margins
+\usepackage{amsmath,amssymb}                 % math environments and symbols
+\usepackage{microtype}                       % improved character spacing/justification
+\usepackage{enumitem}                        % fine-grained list control
+\usepackage{hyperref}                        % clickable cross-references and URLs
+
+%% fix mathbb font for digits
+\DeclareMathAlphabet{\mathbb}{U}{bbold}{m}{n}
+
+%% \usepackage[T1]{fontenc}
+%% \usepackage[utf8]{inputenc}
+%% \usepackage{lmodern}
+%% \usepackage[margin=1in]{geometry}
+%% \usepackage{microtype}
+%% \usepackage{parskip}
+%% \usepackage{enumitem}
+%% \usepackage[hidelinks]{hyperref}
+
+%% \setlist[enumerate]{leftmargin=*, itemsep=0.4em}
+
+\title{LLMs at Work:\\Experience Report on Employing LLMs in Complex Research Tasks}
+\author{A. Nejati}
+\date{21.05.2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+A meta-discussion on experiences and reflections on the use of large language models in scientific and technical work
+\end{center}
+
+\section{Introduction}
+Over the past year or so, I have worked extensively with several large language model (LLM) systems, including OpenAI models, Claude Code, Google AI systems (Gemini), Grok, Perplexity and Deepseek. I have applied these systems to a variety of tasks and problem domains, ranging from simple questions to complex technical problems and even to intellectual controversies.
+
+The purpose of this presentation is not to evaluate particular models competitively, but rather to share practical experience across different categories of application. In many respects, our interaction with LLMs resembles an exploratory stage in science, somewhat similar to an early empirical practice such as herbal medicine (a modern paraherbalism, perhaps). We use these tools even though their internal mechanisms remain only meagerly understood. Consequently, practical knowledge of LLMs develops primarily through observation, experimentation, and the collective sharing of experiences across disciplines about their \emph{emergent} behavior.
+
+\section{LLMs as Extended Search Engines}
+The first category of applications is the use of LLMs as advanced, interactive ``search engines''; for instance, retrieving details about historical events, translating and understanding foreign languages, clarifying domain-specific terminology, or seeking piecemeal advice.
+
+In this domain, LLMs perform remarkably well. Their principal advantage over traditional search engines lies in their interactivity. Rather than merely returning URLs to documents, they engage in iterative dialogue, patiently guide the user through complex nuances, adapt their explanations to the user's level of comprehension, and provide references for substantiation and further reading.
+
+\section{Routine Programming in Well-Known Domains}
+Programming languages are a highly structured, logical, and strictly rule-governed realm of knowledge. Because formal languages possess rigid syntax, and are equipped with compilers or interpreters, they are particularly suitable for LLM-assisted work.
+
+In my experience, AI models are highly proficient with more popular and widely used languages that have a massive training corpus, such as Python, C++, JavaScript or shell scripts. Conversely, they perform noticeably worse on less common languages such as Fortran or Lisp dialects such as Scheme. For routine work, such as generating boilerplate code, basic shell scripting, implementing familiar mundane tasks, converting code across languages, libraries and their versions, or for writing tests, LLMs are a real productivity booster. They can also inspect a codebase, describe its structure, and draft documentation or diagrams that explain the code.
+
+\section{Limitations in Complex Scientific Programming}
+However, a sharp distinction must be drawn between routine programming and the complex computational problems encountered in scientific research. Scientific software development often requires improving existing algorithms, constructing genuinely novel algorithms from scratch, and designing new conceptual frameworks.
+
+When left to its own devices on complex and unfamiliar problems, the LLM usually fails. Because these models are, in a broad technical sense, stochastic sampling machines operating over high-dimensional non-trivial probability spaces (rather than explicit symbolic reasoning in the classical sense), they struggle to find a reliable path through an uncharted territory. They may become trapped in an unsuitable region of that space while missing the correct solutions entirely. Without human-devised constraints, they frequently produce outputs that sound scholarly and plausible, yet are conceptually vacuous or fundamentally incorrect. Concisely said, foundational thinking cannot be outsourced to an AI agent. It is not possible to replace highly-educated and trained humans with AI.
+
+\section{The Illusion of Competence and Epistemic Debt}
+This leads to a crucial caveat in modern AI usage: the illusion of competence.
+
+Because LLMs generate grammatically polished and highly ``confident'' text and code, they can conceal a user's lack of underlying understanding. In software engineering, researchers have recently used the term ``epistemic debt'' to describe a related phenomenon \cite{ngabang2026,boeckeler2026}. Unlike traditional technical debt, epistemic debt arises when the complexity of an AI-generated software or system outpaces the human developer's mental model of that system.
+
+When we rely on AI to write complex algorithms that we do not fully understand, we accumulate an invisible debt. The system may function correctly today, yet it lacks a \emph{human owner} who truly understands its internal logic, leading to a bloated code and making future debugging and extension disproportionately difficult.
+
+A code which is written by LLMs belongs to the realm of LLMs.
+This problem is increasingly visible in the surge of mobile apps and web pages generated almost entirely by LLMs. Such systems can become unmaintainable as soon as a novel bug appears or a nontrivial architectural change is required.
+
+\section{Maintainability and Automation Bias}
+A further complication concerns the maintainability of AI-generated work. Sometimes we are deceived into believing that code is ``good'' simply because it compiles and runs.
+
+However, code in scientific and industrial applications is not written only for machines to execute; it must be also understood, audited, and maintained by humans. AI models often generate dense, complicated solutions that optimize for token completion rather than long-term maintainability or human readability. They can easily drift into fragmented or overly entangled systems, that is, a form of ``AI spaghetti code,'' unless they are guided by a scrutinising human architect.
+
+Furthermore, users (and esp. managers) are susceptible to automation bias, namely the psychological tendency to trust automated decision-making systems and to passively accept subpar outputs in order to save cognitive effort \cite{qazi2025}. This complacency must be actively resisted if scientific reproducibility and software sustainability are to be preserved.
+
+\section{LLMs as Collaborators, Not Initiators}
+To avoid this debt, the most productive role for an LLM is that of a \emph{collaborator} rather than an initiator.
+
+The AI is best understood as a sharp-eyed patient colleague, a critical adjutant, or an unforgiving reviewer. Once the human has done the foundational thinking, established the governing principles, and written the initial framework and drafts, the LLM can be very effective at criticising the work against those principles. It can identify inconsistencies, suggest optimizations, and review the logic at length. The critique is not always sound, but it is often useful and can provoke further insight into the problem.
+
+When the human provides the intellectual direction and the operative constraints, the AI becomes a powerful amplifying tool. If one attempts to let it think instead of oneself, it becomes a deceptive trap.
+
+\section{Philosophical, Historical, and Interpretive Analysis}
+Another category I explored was the application of LLMs to logical, philosophical, and historical debates. In these highly interpretive and multifaceted domains, the results were often problematic (take the example of the ``Historikerstreit'' or economic policy-making).
+
+Unlike mathematics or formal syntax, philosophy and history are plagued with ambiguities. I observed that models often adopt rigid ideological or simplistic stances. They side with particular intellectual camps and defend those positions with unwarranted certainty, even when instructed otherwise. In practice, one often has to debate the model itself in order to force it to acknowledge historical nuances or logical fallacies. For exploratory brainstorming this can still be useful; for detailed and objective analysis it remains too biased and error-prone to be trusted without intense human verification and strong prior knowledge of the subject matter.
+
+Because LLMs are trained on consensus-based data, they naturally drift toward the mean or even the mediocre. Over-reliance on them for idea generation may therefore suppress genuine scientific novelty and groundbreaking problem-solving and lead to increasingly standardized, unoriginal clich\'{e} outputs.
+
+\section{Cognitive Atrophy and the Threat to Skill Acquisition}
+Another profound risk concerns the human learning process itself, affecting both beginners and experienced veterans.
+
+For beginners, there is a real danger that early and unconstrained heavy exposure to AI tools bypasses the productive human struggle required for in-depth learning and critical judgment. In programming, for example, wrestling with syntax errors, reading documentation, and manually tracing logic or debugging are all essential exercises for building robust mental models. If an LLM instantly supplies a working code snippet, the novice may reach the immediate goal while missing the underlying lesson.
+
+This danger also extends to advanced users in the form of ``cognitive atrophy'', namely a gradual loss of practical skills and know-how. After prolonged reliance on AI, one may find it harder to write even a simple algorithm independently, or harder to sustain the patience required to read code or technical documentation carefully. Such over-reliance can become a form of addiction that erodes technical autonomy and deep analytical stamina \cite{clowes2024}.
+
+\section{The Hidden Environmental Costs of LLMs}
+One important issue that is still frequently neglected in discussions of AI utility is the environmental cost of LLMs.
+
+The computational power required both to train these models and to run inference for billions of daily prompts demands a very large amount of electricity and cooling. This is coupled with the substantial raw-material footprint associated with manufacturing specialized hardware such as GPUs.
+
+Using an LLM for every trivial task, including work that could be completed manually in a few minutes, translates into a large energy and raw-material footprint. As adoption scales globally, this hidden environmental burden may become a serious sustainability problem \cite{strubell2020}. The cognitive convenience of AI should therefore be weighed against its material ecological cost, and these energy-intensive systems should be reserved for tasks that genuinely warrant them.
+
+\section{Conclusion}
+To summarize, large language models are unprecedented tools for exploration, routine automation, and collaborative critique. However, they are not well suited to function as autonomous agents for novel scientific invention or complex architectural design and problem solving. Thinking, learning and experties cannot be outsourced to machines, regardless of their sophistication.
+
+The most robust workflow for complex problems is, perhaps, a tripartite loop:
+
+\begin{enumerate}
+\item Human initiation: the human formulates the core concepts, constraints, architecture and the first drafts.
+\item AI augmentation: the LLM assists in generating modular components, exploring alternatives, and reviewing syntax.
+\item Human validation: the human critically evaluates, refines, and claims intellectual ownership of the final result.
+\end{enumerate}
+
+Knowing when to lean on the machine and when to rely on one's own intellect is one of the defining practical challenges of the present technological era.
+
+\begin{thebibliography}{9}
+
+\bibitem{ngabang2026}
+L. A. Ngabang,
+\newblock \emph{The Illusion of Competence: Defining ``Epistemic Debt'' in the Era of LLM-Assisted Software Engineering},
+\newblock 2026.
+
+\bibitem{boeckeler2026}
+B. Boeckeler,
+\newblock \emph{Maintainability Sensors for Coding Agents},
+\newblock 2026.
+
+\bibitem{qazi2025}
+Qazi et al. and M. Brinsa,
+\newblock \emph{Automation Bias and the Illusion of Intelligence in Knowledge Work},
+\newblock 2025.
+
+\bibitem{bender2021}
+E. M. Bender et al.,
+\newblock \emph{On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?},
+\newblock 2021.
+
+\bibitem{berkeley2024}
+Lawrence Berkeley National Laboratory,
+\newblock \emph{The Risks of Using Large Language Models in Scientific Research},
+\newblock 2024.
+
+\bibitem{clowes2024}
+R. W. Clowes,
+\newblock \emph{Cognitive Offloading and the Erosion of Deep Skill},
+\newblock 2024.
+
+\bibitem{strubell2020}
+E. Strubell et al.,
+\newblock \emph{Energy and Policy Considerations for Deep Learning in NLP},
+\newblock 2020 and 2024 updates.
+
+\end{thebibliography}
+
+\end{document}
